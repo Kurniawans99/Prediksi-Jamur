@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pohon Keputusan - Klasifikasi Jamur</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Pohon Keputusan untuk Menentukan Jamur</h1>
+    </header>
+
+    <main>
+      <section class="tree-container">
+        <h2>Kenali Jamur Anda: Beracun atau Aman Dimakan?</h2>
+        <form id="decision-form">
+          <div class="question">
+            <label for="cap-shape">Bentuk Topi:</label>
+            <select id="cap-shape" name="cap_shape" required>
+              <option value="bell">Lonceng</option>
+              <option value="conical">Kerucut</option>
+              <option value="flat">Datar</option>
+              <option value="knobbed">Bertombol</option>
+              <option value="sunken">Cekung</option>
+              <option value="convex">Cembung</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label for="cap-surface">Permukaan Topi:</label>
+            <select id="cap-surface" name="cap_surface" required>
+              <option value="fibrous">Berserat</option>
+              <option value="grooves">Beralur</option>
+              <option value="smooth">Halus</option>
+              <option value="scaly">Bersisik</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label for="cap-color">Warna Topi:</label>
+            <select id="cap-color" name="cap_color" required>
+              <option value="brown">Cokelat</option>
+              <option value="buff">Krem</option>
+              <option value="red">Merah</option>
+              <option value="gray">Abu-abu</option>
+              <option value="yellow">Kuning</option>
+              <option value="white">Putih</option>
+              <option value="orange">Oranye</option>
+              <option value="pink">Merah Muda</option>
+              <option value="purple">Ungu</option>
+              <option value="black">Hitam</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label for="gill-color">Warna Insang:</label>
+            <select id="gill-color" name="gill_color" required>
+              <option value="black">Hitam</option>
+              <option value="brown">Cokelat</option>
+              <option value="red">Merah</option>
+              <option value="yellow">Kuning</option>
+              <option value="white">Putih</option>
+              <option value="gray">Abu-abu</option>
+              <option value="orange">Oranye</option>
+              <option value="pink">Merah Muda</option>
+              <option value="purple">Ungu</option>
+            </select>
+          </div>
+
+          <div class="question">
+            <label for="odor">Aroma Jamur:</label>
+            <select id="odor" name="odor" required>
+              <option value="almond">Kacang Almond</option>
+              <option value="anise">Adas Manis</option>
+              <option value="creosote">Minyak Tar</option>
+              <option value="fishy">Bau Amis</option>
+              <option value="foul">Bau Busuk</option>
+              <option value="musty">Bau Apak</option>
+              <option value="none">Tidak Ada Bau</option>
+              <option value="pungent">Bau Menyengat</option>
+              <option value="spicy">Bau Pedas</option>
+            </select>
+          </div>
+
+          <button type="submit">Tentukan</button>
+        </form>
+
+        <div id="result" class="result"></div>
+      </section>
+    </main>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: green;
+        color: white;
+        text-align: center;
+        padding: 1em 0;
+      }
+
+      .tree-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      .question {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: darkgreen;
+      }
+
+      .result {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 18px;
+        color: #333;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      .result.safe {
+        background-color: #e0f8e0;
+        color: #2d6a2d;
+        border: 2px solid #2d6a2d;
+      }
+
+      .result.danger {
+        background-color: #fce4e4;
+        color: #c62828;
+        border: 2px solid #c62828;
+      }
+
+      .result.uncertain {
+        background-color: #fff8e1;
+        color: #f57f17;
+        border: 2px solid #f57f17;
+      }
+    </style>
+
+    <script>
+      document
+        .getElementById("decision-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const formData = {
+            cap_shape: document.getElementById("cap-shape").value,
+            cap_surface: document.getElementById("cap-surface").value,
+            cap_color: document.getElementById("cap-color").value,
+            gill_color: document.getElementById("gill-color").value,
+            odor: document.getElementById("odor").value,
+          };
+
+          fetch("/predict", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const resultDiv = document.getElementById("result");
+              resultDiv.textContent = data.result;
+              resultDiv.className = `result ${
+                data.result === "Beracun" ? "danger" : "safe"
+              }`;
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+  </body>
+</html>
